@@ -3,22 +3,20 @@ class TodosController < ApplicationController
 
   # GET /todos
   def index
-    @todos = Todo.all
-
-    render json: @todos
+    render json: Todo.all
   end
 
   # GET /todos/1
   def show
-    render json: @todo
+    render json: @todo.to_json(:methods => :created_ago)
   end
 
   # POST /todos
   def create
-    @todo = Todo.new(params.require(:todo).permit(:title, :description))
+    @todo = Todo.new(todo_params)
 
     if @todo.save
-      render json: @todo, status: :created, location: @todo
+      render json: @todo, status: :created
     else
       render json: @todo.errors, status: :unprocessable_entity
     end
@@ -35,7 +33,11 @@ class TodosController < ApplicationController
 
   # DELETE /todos/1
   def destroy
-    @todo.destroy
+    if @todo.destroy
+      render json: {}, status: :ok
+    else
+      render json: 'No se pudo borrar el todo', status: :unprocessable_entity
+    end
   end
 
   private
@@ -46,6 +48,6 @@ class TodosController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def todo_params
-      params.fetch(:todo, {})
+      params.require(:todo).permit(:title, :description)
     end
 end

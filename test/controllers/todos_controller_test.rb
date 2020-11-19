@@ -6,31 +6,31 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index" do
-    get todo_url, as: :json
+    get todos_url, as: :json
     assert_response :success
   end
 
   test "should create todo" do
     assert_difference('Todo.count') do
-      post todo_url, params: { todo: {  } }, as: :json
+      post todos_url, params: { todo: {  } }, as: :json
     end
 
     assert_response 201
   end
 
   test "should show todo" do
-    get todo_url(@todo), as: :json
+    get todos_url(@todo), as: :json
     assert_response :success
   end
 
   test "should update todo" do
-    patch todo_url(@todo), params: { todo: {  } }, as: :json
+    patch todos_url(@todo), params: { todo: {  } }, as: :json
     assert_response 200
   end
 
   test "should destroy todo" do
     assert_difference('Todo.count', -1) do
-      delete todo_url(@todo), as: :json
+      delete todos_url(@todo), as: :json
     end
 
     assert_response 204
